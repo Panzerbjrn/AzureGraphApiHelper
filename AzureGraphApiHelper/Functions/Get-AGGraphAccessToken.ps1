@@ -42,13 +42,14 @@ Function Get-AGGraphAccessToken{
 
 	BEGIN{
 		$TokenEndpoint = "https://login.microsoftonline.com/$Tenantid/oauth2/v2.0/token"
+
 	}
 	PROCESS{
 		$Body = @{
-			Grant_Type		= "client_credentials"
-			Scope			= "https://graph.microsoft.com/.default"
-			Client_Id		= $clientId
-			Client_Secret	= $clientSecret
+			Grant_Type = "client_credentials"
+			Scope = "https://graph.microsoft.com/.default"
+			Client_Id = $ClientID
+			Client_Secret = $ClientSecret
 		}
 
 		$InvokeRestMethodSplat = @{
@@ -58,7 +59,6 @@ Function Get-AGGraphAccessToken{
 			Method = 'Post'
 			URI = $TokenEndpoint
 		}
-
 		
 		$TokenResponse = Invoke-RestMethod @InvokeRestMethodSplat
 	}
