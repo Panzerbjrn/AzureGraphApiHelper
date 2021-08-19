@@ -51,7 +51,6 @@ Function Get-AGGraphAccessToken{
 
 	BEGIN{
 		$TokenEndpoint = "https://login.microsoftonline.com/$Tenantid/oauth2/v2.0/token"
-
 	}
 	PROCESS{
 		$Body = @{
