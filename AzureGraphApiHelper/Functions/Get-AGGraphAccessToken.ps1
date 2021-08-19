@@ -66,3 +66,4 @@ Function Get-AGGraphAccessToken{
 		Return $TokenResponse
 	}
 }
+
