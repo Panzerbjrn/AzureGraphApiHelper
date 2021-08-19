@@ -14,7 +14,7 @@ Function Get-AGGroups{
 		
 		Get-AGGroups -AccessToken $AccessToken -DisplayNameStartsWith Az-Cont
 		
-		This command first gets an access token, which is used to grant access to Graph, and theen a list of groups is retrieved.
+		This command first gets an access token, which is used to grant access to Graph, and then a list of groups is retrieved.
 
 	.PARAMETER AccessToken
 		This is the AccessToken that grants you access to MS Graph.
