@@ -13,6 +13,15 @@ Function Get-AGGraphAccessToken{
 
 		Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
 
+	.EXAMPLE
+		$TenantId = "c123456f-a1cd-6fv7-bh73-123r5t6y7u8i9"
+		$ClientId = '1a2s3d4d4-dfhg-4567-d5f6-h4f6g7k933ae'
+		$ClientSecret = '36._ERF567.6FB.XFGY75D-35TGasdrvk467'
+
+		$Token = Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
+		
+		This example stores the token in a variable that can be used to grant access.
+
 	.PARAMETER TenantID
 		This is the tenant ID of your Azure subscription.
 
@@ -66,4 +75,3 @@ Function Get-AGGraphAccessToken{
 		Return $TokenResponse
 	}
 }
-
