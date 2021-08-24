@@ -1,4 +1,4 @@
-Function Get-AGGroupMemberships{
+Function Get-AGGroupMembership{
 	<#
 	.SYNOPSIS
 		Retrieves a list of members of the specified group via MS Graph API.
@@ -42,4 +42,26 @@ Function Get-AGGroupMemberships{
 
 	BEGIN{
 
+	}
+	PROCESS{
+		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers
+		$Resources = $Result.value
+		IF (!([string]::IsNullOrEmpty($Result.'@odata.nextLink'))){
+			$Page = 1
+			DO{
+				Write-Verbose "Page $($Page)"
+				$URI = $Result.'@odata.nextLink'
+				$Result = Invoke-RestMethod -Uri $URI -Headers $Headers
+				$Resources += $Result.value
+				Write-Verbose "There are $($Resources.count) resources"
+				$Page++
+				#Sleep -s 1
+			}
+			UNTIL ($Result.'@odata.nextLink' -eq $Null)
+		}
+		Write-Verbose "There are $($Resources.count) resources"
+	}
+	END{
+		Return $Resources
+	}
 }
