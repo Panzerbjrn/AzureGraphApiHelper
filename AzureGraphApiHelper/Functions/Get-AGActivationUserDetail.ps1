@@ -1,5 +1,5 @@
 Function Get-AGActivationUserDetail{
-	<#
+<#
 	.SYNOPSIS
 		Retrieves a list of users and their O365 activation details via MS Graph API.
 
@@ -30,10 +30,15 @@ Function Get-AGActivationUserDetail{
 	[CmdletBinding()]
 	param
 	(
-		[Parameter(Mandatory)][psobject]$AccessToken
+		[Parameter()][psobject]$AccessToken
 	)
 	BEGIN{
-		$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}
+		IF (($AccessToken) -or ($TokenResponse)){
+			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}}
+			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
+		}
+		ELSE {THROW "Please provide access token"}
+		
 		$BaseURI = "https://graph.microsoft.com/v1.0"
 		$ExpandedURI = "/reports/getOffice365ActivationsUserDetail"
 		$URI = $BaseURI + $ExpandedURI

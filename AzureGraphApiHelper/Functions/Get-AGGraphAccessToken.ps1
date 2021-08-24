@@ -40,6 +40,8 @@ Function Get-AGGraphAccessToken{
 	.NOTES
 		Author:				Lars Panzerbjørn
 		Creation Date:		2021.08.11
+		
+		This token is also stored in the Script scope, and so is automagically available to other functions.
 #>
 	[CmdletBinding()]
 	param
@@ -68,7 +70,7 @@ Function Get-AGGraphAccessToken{
 			URI = $TokenEndpoint
 		}
 		
-		$TokenResponse = Invoke-RestMethod @InvokeRestMethodSplat
+		$Script:TokenResponse = Invoke-RestMethod @InvokeRestMethodSplat
 	}
 	END{
 		Return $TokenResponse

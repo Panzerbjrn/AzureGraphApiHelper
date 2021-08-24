@@ -1,5 +1,5 @@
-Function Get-AGGroupMember{
-	<#
+Function Get-AGGroupMembers{
+<#
 	.SYNOPSIS
 		Retrieves a list of members of the specified group via MS Graph API.
 
@@ -8,7 +8,7 @@ Function Get-AGGroupMember{
 
 	.EXAMPLE
 		$AccessToken = Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
-		Get-AGGroupMember -AccessToken $AccessToken -DisplayName SecurityGroup_01
+		Get-AGGroupMembers -AccessToken $AccessToken -DisplayName SecurityGroup_01
 		
 		This command first get an access token, which is used to grant access to Graph, and then a list of group members is retrieved.
 		A list of the members of the group is then produced.
@@ -36,7 +36,7 @@ Function Get-AGGroupMember{
 	(
 		[Parameter(ParameterSetName='DisplayName')]
 		[Parameter(ParameterSetName='ID')]
-		[Parameter(Mandatory)][psobject]$AccessToken,
+		[Parameter()][psobject]$AccessToken,
 
 		[Parameter(ParameterSetName='DisplayName')]
 		[Parameter()][string]$DisplayName,
@@ -46,7 +46,11 @@ Function Get-AGGroupMember{
 	)
 
 	BEGIN{
-		$Headers =@{Authorization = "Bearer $($AccessToken.access_token)"}
+		IF (($AccessToken) -or ($TokenResponse)){
+			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}}
+			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
+		}
+		ELSE {THROW "Please provide access token"}
 		$BaseURI = "https://graph.microsoft.com/v1.0"
 	}
 	PROCESS{
