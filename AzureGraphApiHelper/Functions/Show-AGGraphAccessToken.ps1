@@ -1,10 +1,10 @@
 Function Show-AGGraphAccessToken{
 <#
 	.SYNOPSIS
-		Retrieves a list of groups via MS Graph API.
+		This will show the existing Token if one exists
 
 	.DESCRIPTION
-		Retrieves a list of groups via MS Graph API.
+		This will show the existing Token if one exists
 
 	.EXAMPLE
 		Show-AGGraphAccessToken
