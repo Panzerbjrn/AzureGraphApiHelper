@@ -71,6 +71,7 @@ Function Get-AGGraphAccessToken{
 		}
 		
 		$Script:TokenResponse = Invoke-RestMethod @InvokeRestMethodSplat
+		$TokenResponse | Add-Member NoteProperty ExpiresOn((Get-Date).AddSeconds($TokenResponse.expires_in))
 	}
 	END{
 		Return $TokenResponse
