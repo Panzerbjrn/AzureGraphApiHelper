@@ -1,4 +1,4 @@
-Function Get-DeletedUsers{
+Function Get-AGDeletedUsers{
 <#
 	.SYNOPSIS
 		Retrieves a list of delete O365 users via MS Graph API.
@@ -8,12 +8,12 @@ Function Get-DeletedUsers{
 
 	.EXAMPLE
 		$AccessToken = Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
-		$Details = Get-DeletedUsers -AccessToken $AccessToken
+		$Details = Get-AGDeletedUsers -AccessToken $AccessToken
 		
 		This command first get an access token, which is used to grant access to Graph, and then a list of deleted users is retrieved.
 		
 	.EXAMPLE
-		$Details = Get-DeletedUsers
+		$Details = Get-AGDeletedUsers
 		
 		This command uses an existing access token, and then a list of deleted users is retrieved.
 		
@@ -42,9 +42,9 @@ Function Get-DeletedUsers{
 		}
 		ELSE {THROW "Please provide access token"}
 		
-		$BaseURI = "https://graph.microsoft.com/beta"
+		$Version = "/beta"
 		$ExpandedURI = "/directory/deleteditems/microsoft.graph.user?`$format=application/json"
-		$URI = $BaseURI + $ExpandedURI
+		$URI = $BaseURI + $Version + $ExpandedURI
 	}
 	PROCESS{
 		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers

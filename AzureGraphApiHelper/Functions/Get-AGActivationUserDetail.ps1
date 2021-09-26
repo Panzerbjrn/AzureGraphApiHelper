@@ -39,9 +39,9 @@ Function Get-AGActivationUserDetail{
 		}
 		ELSE {THROW "Please provide access token"}
 		
-		$BaseURI = "https://graph.microsoft.com/v1.0"
+		$Version = "/v1.0"
 		$ExpandedURI = "/reports/getOffice365ActivationsUserDetail"
-		$URI = $BaseURI + $ExpandedURI
+		$URI = $BaseURI + $Version + $ExpandedURI
 	}
 	PROCESS{
 		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers

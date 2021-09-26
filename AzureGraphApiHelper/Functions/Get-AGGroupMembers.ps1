@@ -51,7 +51,7 @@ Function Get-AGGroupMembers{
 			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
 		}
 		ELSE {THROW "Please provide access token"}
-		$BaseURI = "https://graph.microsoft.com/v1.0"
+		$Version = "/v1.0"
 	}
 	PROCESS{
 		IF ("DisplayName" -eq $PSCmdlet.ParameterSetName){
@@ -60,7 +60,7 @@ Function Get-AGGroupMembers{
 			IF($ID.count -gt 1){THROW "More than one group was found"}
 		}
 
-		$URI = $BaseURI + "/groups/" + $ID + "/members"
+		$URI = $BaseURI + $Version + "/groups/" + $ID + "/members"
 		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers
 
 		$Resources = $Result.value
@@ -79,6 +79,6 @@ Function Get-AGGroupMembers{
 		Write-Verbose "There are $($Resources.count) resources"
 	}
 	END{
-		Return $Resources
+		$Resources
 	}
 }

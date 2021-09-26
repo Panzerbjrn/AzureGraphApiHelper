@@ -11,7 +11,7 @@
 	RootModule = 'AzureGraphApiHelper.psm1'
 
 	# Version number of this module.
-	ModuleVersion = '0.5.6'
+	ModuleVersion = '0.5.9'
 
 	# ID used to uniquely identify this module
 	GUID = 'fc59d2cd-5151-4013-a762-024c131c48e8'
