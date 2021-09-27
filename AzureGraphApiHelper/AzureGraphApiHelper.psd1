@@ -11,7 +11,7 @@
 	RootModule = 'AzureGraphApiHelper.psm1'
 
 	# Version number of this module.
-	ModuleVersion = '0.5.9'
+	ModuleVersion = '0.6.0'
 
 	# ID used to uniquely identify this module
 	GUID = 'fc59d2cd-5151-4013-a762-024c131c48e8'
@@ -26,7 +26,7 @@
 	Copyright = '(c) Lars Panzerbjørn. All rights reserved.'
 
 	# Description of the functionality provided by this module
-	Description = 'This module will help to make Graph API calls'
+	Description = 'This module will help to make MS Graph REST API calls. This includes some InTune and AD functionality.'
 
 	# Minimum version of the PowerShell engine required by this module
 	PowerShellVersion = '5.0'
@@ -45,7 +45,7 @@
 		PSData = @{
 
 			# Tags applied to this module. These help with module discovery in online galleries.
-			Tags = @('Panzerbjrn')
+			Tags = @('MSGraph','RESTAPI','Panzerbjrn','InTune','AzureActiveDirectory','AAD')
 
 			# A URL to the license for this module.
 			# LicenseUri = ''
@@ -79,4 +79,3 @@
 	# DefaultCommandPrefix = ''
 
 }
-
