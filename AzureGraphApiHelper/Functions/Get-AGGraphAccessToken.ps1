@@ -72,6 +72,7 @@ Function Get-AGGraphAccessToken{
 		
 		$Script:BaseUri = "https://graph.microsoft.com"
 		$Script:TokenResponse = Invoke-RestMethod @InvokeRestMethodSplat
+		$Script:Headers =@{Authorization = "Bearer $($tokenResponse.access_token)"}
 		$TokenResponse | Add-Member NoteProperty ExpiresOn((Get-Date).AddSeconds($TokenResponse.expires_in))
 	}
 	END{
