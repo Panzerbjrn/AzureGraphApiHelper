@@ -1,10 +1,10 @@
-Function Get-AGGroups{
+Function Get-AGUsers{
 <#
 	.SYNOPSIS
-		Retrieves a list of groups via MS Graph API.
+		Retrieves a list of users via MS Graph API.
 
 	.DESCRIPTION
-		Retrieves a list of groups via MS Graph API.
+		Retrieves a list of users via MS Graph API.
 
 	.EXAMPLE
 		$TenantId = "c123456f-a1cd-6fv7-bh73-123r5t6y7u8i9"
@@ -12,17 +12,12 @@ Function Get-AGGroups{
 		$ClientSecret = '36._ERF567.6FB.XFGY75D-35TGasdrvk467'
 		$AccessToken = Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
 		
-		Get-AGGroups -AccessToken $AccessToken -DisplayNameStartsWith Az-Cont
+		Get-AGUsers -AccessToken $AccessToken
 		
-		This command first gets an access token, which is used to grant access to Graph, and then a list of groups is retrieved.
+		This command first gets an access token, which is used to grant access to Graph, and then a list of users is retrieved.
 
 	.PARAMETER AccessToken
 		This is the AccessToken that grants you access to MS Graph.
-
-	.PARAMETER DisplayNameStartsWith
-		This is the start of the name of the group(s) you are looking for. If not used, all groups are returned.
-		
-		Example: for the group "Admin_Desktops" you could use -DisplayNameStartsWith Admin_D
 
 	.INPUTS
 		Input is from command line or called from a script.
@@ -42,20 +37,9 @@ Function Get-AGGroups{
 	)
 
 	BEGIN{
-		IF (($AccessToken) -or ($TokenResponse)){
-			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}}
-			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
-		}
-		ELSE {THROW "Please provide access token"}
-		$BaseURI = "https://graph.microsoft.com"
 		$Version = "/v1.0"
 		$URI = $BaseURI + $Version
-		IF($DisplayNameStartsWith){
-			$URI = $URI + "/groups?`$filter=startswith(displayName, '$DisplayNameStartsWith')"
-		}
-		ELSE{
-			$URI = $URI + "/groups"
-		}
+		$URI = $URI + "/users"
 	}
 	PROCESS{
 		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers
