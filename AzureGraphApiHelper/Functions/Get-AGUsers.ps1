@@ -21,8 +21,24 @@ Function Get-AGUsers{
 		
 		This command first gets a user's details.
 
+	.EXAMPLE
+		Get-AGUsers -UserType guest
+		
+		This command will retrieve a list of guest users.
+
 	.PARAMETER AccessToken
 		This is the AccessToken that grants you access to MS Graph. This is not required if you used Get-AGGraphAccessToken to authenticate.
+
+	.PARAMETER UserPrincipalName
+		This is the UserPrincipalName of the user, for example Lars.Panzerbjrn@centralindustrial.eu.
+		This would be used if you want to look for a specific user.
+
+	.PARAMETER UserType
+		This is the type of user to look for, for example, guest users..
+
+	.PARAMETER UseBetaAPI
+		This will force use of the beta version of the API, which sometimes will give more information, and sometimes will be broken.
+		As with all other "beta things" use with caution. Or reckless abandon. Be yourself.
 
 	.INPUTS
 		Input is from command line or called from a script.
@@ -41,21 +57,36 @@ Function Get-AGUsers{
 		
 		[Parameter()]
 		[Alias('UPN')]
-		[string]$UserPrincipalName
+		[string]$UserPrincipalName,
 
+		[Parameter()][string]$UserType,
+		
+		[Parameter()][switch]$UseBetaAPI
 	)
 
 	BEGIN{
-		$Version = "/v1.0"
+		IF (($AccessToken) -or ($TokenResponse)){
+			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}}
+			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
+		}
+		ELSE {THROW "Please provide access token"}
+
+		IF($UseBetaAPI){$Version = "/beta"}
+		Else{$Version = "/v1.0"}
+
 		$URI = $BaseURI + $Version
 		
 		IF($UserPrincipalName){
 			$URI = $URI + "/users/$($UserPrincipalName)"
 		}
+		ELSEIF($UserType){
+			$URI = $URI + "/users?`$filter=userType eq '$UserType'"
+		}
 		ELSE{
 			$URI = $URI + "/users"
 		}
-
+		
+		
 	}
 	PROCESS{
 		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers

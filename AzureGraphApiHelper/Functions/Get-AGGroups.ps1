@@ -24,6 +24,10 @@ Function Get-AGGroups{
 		
 		Example: for the group "Admin_Desktops" you could use -DisplayNameStartsWith Admin_D
 
+	.PARAMETER UseBetaAPI
+		This will force use of the beta version of the API, which sometimes will give more information, and sometimes will be broken.
+		As with all other "beta things" use with caution. Or reckless abandon. Be yourself.
+
 	.INPUTS
 		Input is from command line or called from a script.
 
@@ -38,7 +42,8 @@ Function Get-AGGroups{
 	param
 	(
 		[Parameter()][psobject]$AccessToken,
-		[Parameter()][string]$DisplayNameStartsWith
+		[Parameter()][string]$DisplayNameStartsWith,
+		[Parameter()][switch]$UseBetaAPI
 	)
 
 	BEGIN{
@@ -47,9 +52,12 @@ Function Get-AGGroups{
 			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
 		}
 		ELSE {THROW "Please provide access token"}
-		$BaseURI = "https://graph.microsoft.com"
-		$Version = "/v1.0"
+
+		IF($UseBetaAPI){$Version = "/beta"}
+		Else{$Version = "/v1.0"}
+
 		$URI = $BaseURI + $Version
+		
 		IF($DisplayNameStartsWith){
 			$URI = $URI + "/groups?`$filter=startswith(displayName, '$DisplayNameStartsWith')"
 		}

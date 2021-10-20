@@ -20,10 +20,14 @@ Function Get-AGAccessPackages{
 		Creation Date:		2021.10.12
 		
 #>
+	[CmdletBinding()]
 	$Version = "/beta"
+	$URI = $BaseURI + $Version
+	$URI = $URI + "/identityGovernance/entitlementManagement/accessPackages"
+	
 	$InvokeRestMethodSplat = @{
 		Headers = $Headers
-		Uri = "/beta/identityGovernance/entitlementManagement/accessPackages"
+		Uri = $URI
 		Method = "Get"
 	}
 

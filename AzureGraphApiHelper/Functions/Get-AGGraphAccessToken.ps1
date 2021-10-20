@@ -70,6 +70,9 @@ Function Get-AGGraphAccessToken{
 			URI = $TokenEndpoint
 		}
 		
+		$Script:TenantID = $TenantID
+		$Script:ClientID = $ClientId
+		$Script:ClientSecret = $ClientSecret
 		$Script:BaseUri = "https://graph.microsoft.com"
 		$Script:TokenResponse = Invoke-RestMethod @InvokeRestMethodSplat
 		$Script:Headers = @{Authorization = "Bearer $($tokenResponse.access_token)"}
