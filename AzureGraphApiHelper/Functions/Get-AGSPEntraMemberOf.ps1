@@ -47,21 +47,21 @@ Function Get-AGSPEntraMemberOf{
 		This will output a list of Entra entries (groups and directory roles) that the service principal is a member of.
 
 #>
-	[CmdletBinding(DefaultParameterSetName='ByObjectID')]
+	[CmdletBinding(DefaultParameterSetName='ObjectID')]
 	param
 	(
-		[Parameter(Mandatory)][psobject]$AccessToken,
+		[Parameter()][psobject]$AccessToken,
 
-		[Parameter(ParameterSetName='ByObjectID', Mandatory)]
-		[Parameter(ParameterSetName='ByObjectIDBeta', Mandatory)]
+		[Parameter(ParameterSetName='ObjectID')]
+		[Parameter(ParameterSetName='ObjectIDBeta')]
 		[string]$ObjectID,
 
-		[Parameter(ParameterSetName='ByAppID', Mandatory)]
-		[Parameter(ParameterSetName='ByAppIDBeta', Mandatory)]
+		[Parameter(ParameterSetName='AppID')]
+		[Parameter(ParameterSetName='AppIDBeta')]
 		[string]$AppID,
 
-		[Parameter(ParameterSetName='ByObjectIDBeta')]
-		[Parameter(ParameterSetName='ByAppIDBeta')]
+		[Parameter(ParameterSetName='ObjectIDBeta')]
+		[Parameter(ParameterSetName='AppIDBeta')]
 		[switch]$UseBetaAPI
 	)
 
