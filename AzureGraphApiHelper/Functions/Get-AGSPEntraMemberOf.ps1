@@ -47,17 +47,17 @@ Function Get-AGSPEntraMemberOf{
 		This will output a list of Entra entries (groups and directory roles) that the service principal is a member of.
 
 #>
-	[CmdletBinding(DefaultParameterSetName='ObjectID')]
+	[CmdletBinding()]
 	param
 	(
 		[Parameter()][psobject]$AccessToken,
 
-		[Parameter(ParameterSetName='ObjectID')]
-		[Parameter(ParameterSetName='ObjectIDBeta')]
+		[Parameter(ParameterSetName='ObjectID', Mandatory=$true)]
+		[Parameter(ParameterSetName='ObjectIDBeta', Mandatory=$true)]
 		[string]$ObjectID,
 
-		[Parameter(ParameterSetName='AppID')]
-		[Parameter(ParameterSetName='AppIDBeta')]
+		[Parameter(ParameterSetName='AppID', Mandatory=$true)]
+		[Parameter(ParameterSetName='AppIDBeta', Mandatory=$true)]
 		[string]$AppID,
 
 		[Parameter(ParameterSetName='ObjectIDBeta')]
@@ -81,7 +81,7 @@ Function Get-AGSPEntraMemberOf{
 		# If AppID was provided, first look up the service principal to get its Object ID
 		IF($PSCmdlet.ParameterSetName -eq "AppID" -or $PSCmdlet.ParameterSetName -eq "AppIDBeta"){
 			Write-Verbose "Looking up service principal with AppID: $AppID"
-			$LookupURI = $BaseURI + $Version + "/servicePrincipals(appId='$AppID')"
+			$LookupURI = $BaseURI + "/v1.0/servicePrincipals(appId='$AppID')"
 			$LookupResult = Invoke-RestMethod -Uri $LookupURI -Headers $Headers
 
 			IF($LookupResult.value){
@@ -96,8 +96,11 @@ Function Get-AGSPEntraMemberOf{
 				THROW "No service principal found with AppID: $AppID"
 			}
 		}
-		ELSE {
+		ELSEIF($PSCmdlet.ParameterSetName -eq "ObjectID" -or $PSCmdlet.ParameterSetName -eq "ObjectIDBeta"){
 			$OID = $ObjectID
+		}
+		ELSE {
+			THROW "Either -ObjectID or -AppID must be provided"
 		}
 
 		# Build the appropriate endpoint URI
