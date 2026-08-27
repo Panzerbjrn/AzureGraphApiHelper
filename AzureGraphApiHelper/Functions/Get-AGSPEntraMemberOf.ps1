@@ -79,7 +79,7 @@ Function Get-AGSPEntraMemberOf{
 
 	PROCESS{
 		# If AppID was provided, first look up the service principal to get its Object ID
-		IF($PSCmdlet.ParameterSetName -eq "ByAppID" -or $PSCmdlet.ParameterSetName -eq "ByAppIDBeta"){
+		IF($PSCmdlet.ParameterSetName -eq "AppID" -or $PSCmdlet.ParameterSetName -eq "AppIDBeta"){
 			Write-Verbose "Looking up service principal with AppID: $AppID"
 			$LookupURI = $BaseURI + $Version + "/servicePrincipals(appId='$AppID')"
 			$LookupResult = Invoke-RestMethod -Uri $LookupURI -Headers $Headers
