@@ -1,4 +1,4 @@
-Function Get-AGSPEntra{
+Function Get-AGSPEntraMemberOf{
 <#
 	.SYNOPSIS
 		Retrieves the Entra (Azure AD) groups and directory roles that a service principal is a direct member of via MS Graph API.
@@ -9,17 +9,17 @@ Function Get-AGSPEntra{
 
 	.EXAMPLE
 		$AccessToken = Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
-		Get-AGSPEntraEntry -AccessToken $AccessToken -ObjectID "12345678-1234-1234-1234-123456789abc"
+		Get-AGSPEntraMemberOf -AccessToken $AccessToken -ObjectID "12345678-1234-1234-1234-123456789abc"
 
 		This command first gets an access token, which is used to grant access to Graph, and then retrieves the Entra entries (groups and directory roles) that the specified service principal is a direct member of.
 
 	.EXAMPLE
-		Get-AGSPEntraEntry -AccessToken $AccessToken -AppID "12345678-1234-1234-1234-123456789abc"
+		Get-AGSPEntraMemberOf -AccessToken $AccessToken -AppID "12345678-1234-1234-1234-123456789abc"
 
 		This command uses the Application (Client) ID instead of the Object ID to look up the service principal and retrieve its direct memberships.
 
 	.EXAMPLE
-		Get-AGSPEntraEntry -AccessToken $AccessToken -ObjectID "12345678-1234-1234-1234-123456789abc" -UseBetaAPI
+		Get-AGSPEntraMemberOf -AccessToken $AccessToken -ObjectID "12345678-1234-1234-1234-123456789abc" -UseBetaAPI
 
 		This command retrieves transitive memberships (including nested groups) for the specified service principal using the beta endpoint.
 
@@ -46,21 +46,18 @@ Function Get-AGSPEntra{
 	.OUTPUTS
 		This will output a list of Entra entries (groups and directory roles) that the service principal is a member of.
 
-	.NOTES
-		Author:				Based on the AG module style
-		Creation Date:		2026.08.27
 #>
 	[CmdletBinding(DefaultParameterSetName='ByObjectID')]
 	param
 	(
-		[Parameter(Mandatory=$true)][psobject]$AccessToken,
+		[Parameter(Mandatory)][psobject]$AccessToken,
 
-		[Parameter(ParameterSetName='ByObjectID', Mandatory=$true)]
-		[Parameter(ParameterSetName='ByObjectIDBeta', Mandatory=$true)]
+		[Parameter(ParameterSetName='ByObjectID', Mandatory)]
+		[Parameter(ParameterSetName='ByObjectIDBeta', Mandatory)]
 		[string]$ObjectID,
 
-		[Parameter(ParameterSetName='ByAppID', Mandatory=$true)]
-		[Parameter(ParameterSetName='ByAppIDBeta', Mandatory=$true)]
+		[Parameter(ParameterSetName='ByAppID', Mandatory)]
+		[Parameter(ParameterSetName='ByAppIDBeta', Mandatory)]
 		[string]$AppID,
 
 		[Parameter(ParameterSetName='ByObjectIDBeta')]
@@ -84,7 +81,7 @@ Function Get-AGSPEntra{
 		# If AppID was provided, first look up the service principal to get its Object ID
 		IF($PSCmdlet.ParameterSetName -eq "ByAppID" -or $PSCmdlet.ParameterSetName -eq "ByAppIDBeta"){
 			Write-Verbose "Looking up service principal with AppID: $AppID"
-			$LookupURI = $BaseURI + "/v1.0/servicePrincipals(appId='$AppID')"
+			$LookupURI = $BaseURI + $Version + "/servicePrincipals(appId='$AppID')"
 			$LookupResult = Invoke-RestMethod -Uri $LookupURI -Headers $Headers
 
 			IF($LookupResult.value){
