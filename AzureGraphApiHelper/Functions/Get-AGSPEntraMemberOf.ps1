@@ -47,21 +47,25 @@ Function Get-AGSPEntraMemberOf{
 		This will output a list of Entra entries (groups and directory roles) that the service principal is a member of.
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParameterSetName='AppID')]
 	param
 	(
-		[Parameter()][psobject]$AccessToken,
+		[Parameter(ParameterSetName='ObjectID')]
+		[Parameter(ParameterSetName='ObjectIDBeta')]
+		[Parameter(ParameterSetName='AppID')]
+		[Parameter(ParameterSetName='AppIDBeta')]
+		[psobject]$AccessToken,
 
-		[Parameter(ParameterSetName='ObjectID', Mandatory=$true)]
-		[Parameter(ParameterSetName='ObjectIDBeta', Mandatory=$true)]
+		[Parameter(Mandatory=$true,ParameterSetName='ObjectID')]
+		[Parameter(Mandatory=$true,ParameterSetName='ObjectIDBeta')]
 		[string]$ObjectID,
 
-		[Parameter(ParameterSetName='AppID', Mandatory=$true)]
-		[Parameter(ParameterSetName='AppIDBeta', Mandatory=$true)]
+		[Parameter(Mandatory=$true,ParameterSetName='AppID')]
+		[Parameter(Mandatory=$true,ParameterSetName='AppIDBeta')]
 		[string]$AppID,
 
-		[Parameter(ParameterSetName='ObjectIDBeta')]
-		[Parameter(ParameterSetName='AppIDBeta')]
+		[Parameter(Mandatory=$true,ParameterSetName='ObjectIDBeta')]
+		[Parameter(Mandatory=$true,ParameterSetName='AppIDBeta')]
 		[switch]$UseBetaAPI
 	)
 
@@ -127,7 +131,7 @@ Function Get-AGSPEntraMemberOf{
 				Write-Verbose "There are $($Resources.count) resources"
 				$Page++
 			}
-			UNTIL ($Result.'@odata.nextLink' -eq $Null)
+			UNTIL ([string]::IsNullOrEmpty($Result.'@odata.nextLink'))
 		}
 		Write-Verbose "There are $($Resources.count) resources"
 	}
