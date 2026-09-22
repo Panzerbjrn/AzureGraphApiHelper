@@ -19,7 +19,7 @@ Function Add-AGSPEntraGroupMember{
 		This command looks up the service principal using the Application (Client) ID and the group using display name, then adds the service principal to that group.
 
 	.PARAMETER AccessToken
-		This is the AccessToken that grants you access to MS Graph.
+		This is the access token that grants you access to Microsoft Graph. If omitted, the function uses the module-scoped token created by Get-AGGraphAccessToken or Get-AGGraphAccessTokenFromAz.
 
 	.PARAMETER ObjectID
 		This is the Object ID (OID) of the service principal you want to add to the group.
@@ -41,10 +41,10 @@ Function Add-AGSPEntraGroupMember{
 		Example: for the group "Admin_Desktops" you could use -DisplayName Admin_D
 
 	.INPUTS
-		Input is from command line or called from a script.
+		None. You cannot pipe input to this function.
 
 	.OUTPUTS
-		This will output True when the service principal was successfully added to the group.
+		System.Boolean. Returns $true when the service principal is successfully added to the group.
 
 	.NOTES
 		Author:				Lars Panzerbjørn

@@ -11,17 +11,17 @@ Function Get-AGGroups{
 		$ClientId = '1a2s3d4d4-dfhg-4567-d5f6-h4f6g7k933ae'
 		$ClientSecret = '36._ERF567.6FB.XFGY75D-35TGasdrvk467'
 		$AccessToken = Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
-		
+
 		Get-AGGroups -AccessToken $AccessToken -DisplayNameStartsWith Az-Cont
-		
+
 		This command first gets an access token, which is used to grant access to Graph, and then a list of groups is retrieved.
 
 	.PARAMETER AccessToken
-		This is the AccessToken that grants you access to MS Graph.
+		This is the access token that grants you access to Microsoft Graph. If omitted, the function uses the module-scoped token created by Get-AGGraphAccessToken or Get-AGGraphAccessTokenFromAz.
 
 	.PARAMETER DisplayNameStartsWith
 		This is the start of the name of the group(s) you are looking for. If not used, all groups are returned.
-		
+
 		Example: for the group "Admin_Desktops" you could use -DisplayNameStartsWith Admin_D
 
 	.PARAMETER UseBetaAPI
@@ -29,10 +29,10 @@ Function Get-AGGroups{
 		As with all other "beta things" use with caution. Or reckless abandon. Be yourself.
 
 	.INPUTS
-		Input is from command line or called from a script.
+		None. You cannot pipe input to this function.
 
 	.OUTPUTS
-		This will output a list of groups.
+		A collection of group objects returned by Microsoft Graph.
 
 	.NOTES
 		Author:				Lars Panzerbjørn
@@ -57,7 +57,7 @@ Function Get-AGGroups{
 		Else{$Version = "/v1.0"}
 
 		$URI = $BaseURI + $Version
-		
+
 		IF($DisplayNameStartsWith){
 			$URI = $URI + "/groups?`$filter=startswith(displayName, '$DisplayNameStartsWith')"
 		}

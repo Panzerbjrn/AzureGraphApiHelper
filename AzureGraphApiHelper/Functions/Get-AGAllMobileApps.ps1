@@ -1,25 +1,27 @@
 Function Get-AGAllMobileApps{
 <#
 	.SYNOPSIS
-		Retrieves a list of apps as defined in InTune.
+		Retrieves a list of apps as defined in Intune.
 
 	.DESCRIPTION
-		Retrieves a list of apps as defined in InTune.
+		Retrieves mobile apps as defined in Intune.
 
 	.EXAMPLE
+		Get-AGGraphAccessTokenFromAz
 		Get-AGAllMobileApps
 
+		This command uses the current Az login context to populate the module token state and then returns Intune mobile apps.
+
 	.INPUTS
-		Input is from command line or called from a script.
+		None. You cannot pipe input to this function.
 
 	.OUTPUTS
-		This will output a list of apps from InTune via MS Graph
+		A collection of Intune mobile app objects returned by the Microsoft Graph beta endpoint.
 
 	.NOTES
 		Author:				Lars Panzerbjørn
 		Creation Date:		2021.09.26
-		
-		This token is also stored in the Script scope, and so is automagically available to other functions.
+		This function uses the module-scoped Graph authentication headers populated by Get-AGGraphAccessToken or Get-AGGraphAccessTokenFromAz.
 #>
 	$Version = "/beta"
 	$InvokeRestMethodSplat = @{

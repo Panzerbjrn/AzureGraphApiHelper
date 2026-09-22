@@ -21,10 +21,15 @@ Function New-AGGroup {
 
         New-AGGroup -DisplayName "Project Phoenix" -Description "Group for the Phoenix project team" -MailNickname "proj-phoenix"
 
-        This creates a new Microsoft 365 group named "Project Phoenix" with the specified description and mail nickname.
+        This creates a new security group named "Project Phoenix" with the specified description and mail nickname by using the module-scoped token.
+
+    .EXAMPLE
+        New-AGGroup -AccessToken $AccessToken -DisplayName "Project Phoenix M365" -Description "Unified collaboration group" -MailNickname "proj-phoenix-m365" -GroupType Microsoft365
+
+        This creates a new Microsoft 365 group.
 
     .PARAMETER AccessToken
-        This is the AccessToken that grants you access to MS Graph.
+        This is the access token that grants you access to Microsoft Graph. If omitted, the function uses the module-scoped token created by Get-AGGraphAccessToken or Get-AGGraphAccessTokenFromAz.
 
     .PARAMETER DisplayName
         The display name for the group. This is required.
@@ -33,19 +38,19 @@ Function New-AGGroup {
         An optional description for the group.
 
     .PARAMETER MailNickname
-        The mail alias for the group, unique in your organization. Required for mail-enabled groups (Microsoft 365). Must contain only characters from the ASCII character set 0-127, excluding: @ () \ [] " ; : <> , SPACE
+        The mail alias for the group, unique in your organization. This is required for Microsoft 365 groups and can also be supplied for security groups. It must contain only characters from the ASCII character set 0-127, excluding: @ () \ [] " ; : <> , SPACE.
 
     .PARAMETER GroupType
-        Specifies the type of group to create. Valid values are "Microsoft365" (default) or "Security".
+        Specifies the type of group to create. Valid values are "Microsoft365" or "Security". The default is "Security".
 
     .PARAMETER UseBetaAPI
         This will force use of the beta version of the API.
 
     .INPUTS
-        Input is from command line or called from a script.
+        None. You cannot pipe input to this function.
 
     .OUTPUTS
-        This will output the newly created group object.
+        The newly created group object returned by Microsoft Graph.
 
     .NOTES
         Author:              Lars Panzerbjørn

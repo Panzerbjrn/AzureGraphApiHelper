@@ -23,17 +23,17 @@ Function Get-AGGraphAccessTokenFromAz {
 		The resource URL for which to get an access token. Defaults to "https://graph.microsoft.com".
 
 	.INPUTS
-		Input is from command line or called from a script.
+		None. You cannot pipe input to this function.
 
 	.OUTPUTS
-		This will output an access token object compatible with other AG* functions.
+		A token response object compatible with the other AG* functions in this module.
 
 	.NOTES
 		Author:				Lars Panzerbjørn
 		Creation Date:		2026.08.27
 
-		Requires the Az module to be installed and authenticated.
-		The token is also stored in the Script scope, making it available to other functions.
+		Requires the Az.Accounts module to be installed and an active Az login context.
+		The returned token is also stored in module scope for use by other functions in this module.
 #>
 	[CmdletBinding()]
 	param(

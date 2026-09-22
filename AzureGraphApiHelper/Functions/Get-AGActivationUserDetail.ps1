@@ -9,19 +9,24 @@ Function Get-AGActivationUserDetail{
 	.EXAMPLE
 		$AccessToken = Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
 		$Details = Get-AGActivationUserDetail -AccessToken $AccessToken
-		
-		This command first get an access token, which is used to grant access to Graph, and then a list of groups is retrieved.
-		A list of the users and their activation details is produced.
-		
+
+		This command first gets an access token, which is used to grant access to Graph, and then retrieves the Office 365 activation detail report for users.
+
+	.EXAMPLE
+		Get-AGGraphAccessTokenFromAz
+		Get-AGActivationUserDetail
+
+		This command uses the current Az login context and then retrieves the Office 365 activation detail report for users.
+
 
 	.PARAMETER AccessToken
-		This is the AccessToken that grants you access to MS Graph.
+		This is the access token that grants you access to Microsoft Graph. If omitted, the function uses the module-scoped token created by Get-AGGraphAccessToken or Get-AGGraphAccessTokenFromAz.
 
 	.INPUTS
-		Input is from command line or called from a script.
+		None. You cannot pipe input to this function.
 
 	.OUTPUTS
-		This will output a list of groups.
+		The Office 365 activation user detail report returned by Microsoft Graph.
 
 	.NOTES
 		Author:				Lars Panzerbjørn
@@ -38,7 +43,7 @@ Function Get-AGActivationUserDetail{
 			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
 		}
 		ELSE {THROW "Please provide access token"}
-		
+
 		$Version = "/v1.0"
 		$ExpandedURI = "/reports/getOffice365ActivationsUserDetail"
 		$URI = $BaseURI + $Version + $ExpandedURI
@@ -47,7 +52,7 @@ Function Get-AGActivationUserDetail{
 		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers
 	}
 	END{
-		Return $Resources
+		Return $Result
 	}
 }
-
+

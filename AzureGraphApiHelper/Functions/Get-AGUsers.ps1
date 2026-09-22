@@ -11,40 +11,40 @@ Function Get-AGUsers{
 		$ClientId = '1a2s3d4d4-dfhg-4567-d5f6-h4f6g7k933ae'
 		$ClientSecret = '36._ERF567.6FB.XFGY75D-35TGasdrvk467'
 		$AccessToken = Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
-		
+
 		Get-AGUsers -AccessToken $AccessToken
-		
+
 		This command first gets an access token, which is used to grant access to Graph, and then a list of users is retrieved.
 
 	.EXAMPLE
 		Get-AGUsers -UPN Lars.Panzerbjrn@centralindustrial.eu
-		
-		This command first gets a user's details.
+
+		This command retrieves a single user's details by user principal name.
 
 	.EXAMPLE
 		Get-AGUsers -UserType guest
-		
+
 		This command will retrieve a list of guest users.
 
 	.PARAMETER AccessToken
-		This is the AccessToken that grants you access to MS Graph. This is not required if you used Get-AGGraphAccessToken to authenticate.
+		This is the access token that grants you access to Microsoft Graph. If omitted, the function uses the module-scoped token created by Get-AGGraphAccessToken or Get-AGGraphAccessTokenFromAz.
 
 	.PARAMETER UserPrincipalName
 		This is the UserPrincipalName of the user, for example Lars.Panzerbjrn@centralindustrial.eu.
 		This would be used if you want to look for a specific user.
 
 	.PARAMETER UserType
-		This is the type of user to look for, for example, guest users..
+		This is the type of user to look for, for example Guest or Member.
 
 	.PARAMETER UseBetaAPI
 		This will force use of the beta version of the API, which sometimes will give more information, and sometimes will be broken.
 		As with all other "beta things" use with caution. Or reckless abandon. Be yourself.
 
 	.INPUTS
-		Input is from command line or called from a script.
+		None. You cannot pipe input to this function.
 
 	.OUTPUTS
-		This will output a list of users, or a single user.
+		A collection of user objects, or a single user object when -UserPrincipalName is used.
 
 	.NOTES
 		Author:				Lars Panzerbjørn
@@ -54,13 +54,13 @@ Function Get-AGUsers{
 	param
 	(
 		[Parameter()][psobject]$AccessToken,
-		
+
 		[Parameter()]
 		[Alias('UPN')]
 		[string]$UserPrincipalName,
 
 		[Parameter()][string]$UserType,
-		
+
 		[Parameter()][switch]$UseBetaAPI
 	)
 
@@ -75,7 +75,7 @@ Function Get-AGUsers{
 		Else{$Version = "/v1.0"}
 
 		$URI = $BaseURI + $Version
-		
+
 		IF($UserPrincipalName){
 			$URI = $URI + "/users/$($UserPrincipalName)"
 		}
@@ -85,8 +85,8 @@ Function Get-AGUsers{
 		ELSE{
 			$URI = $URI + "/users"
 		}
-		
-		
+
+
 	}
 	PROCESS{
 		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers

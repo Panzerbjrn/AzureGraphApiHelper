@@ -24,7 +24,7 @@ Function Get-AGSPEntraMemberOf{
 		This command retrieves transitive memberships (including nested groups) for the specified service principal using the beta endpoint.
 
 	.PARAMETER AccessToken
-		This is the AccessToken that grants you access to MS Graph.
+		This is the access token that grants you access to Microsoft Graph. If omitted, the function uses the module-scoped token created by Get-AGGraphAccessToken or Get-AGGraphAccessTokenFromAz.
 
 	.PARAMETER ObjectID
 		This is the Object ID (OID) of the service principal you want to check memberships for.
@@ -41,10 +41,13 @@ Function Get-AGSPEntraMemberOf{
 		As with all other "beta things" use with caution. Or reckless abandon. Be yourself.
 
 	.INPUTS
-		Input is from command line or called from a script.
+		None. You cannot pipe input to this function.
 
 	.OUTPUTS
-		This will output a list of Entra entries (groups and directory roles) that the service principal is a member of.
+		A collection of directory objects representing groups and directory roles that the service principal is a member of.
+
+	.NOTES
+		Author:				Lars Panzerbjørn
 
 #>
 	[CmdletBinding(DefaultParameterSetName='AppID')]

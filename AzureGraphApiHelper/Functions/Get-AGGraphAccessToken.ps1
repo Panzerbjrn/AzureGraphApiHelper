@@ -19,29 +19,28 @@ Function Get-AGGraphAccessToken{
 		$ClientSecret = '36._ERF567.6FB.XFGY75D-35TGasdrvk467'
 
 		$Token = Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
-		
+
 		This example stores the token in a variable that can be used to grant access.
 
 	.PARAMETER TenantID
-		This is the tenant ID of your Azure subscription.
+		This is the Microsoft Entra tenant ID used to request the token.
 
 	.PARAMETER ClientID
-		This is the ClientID of the Service Principal
+		This is the application (client) ID of the app registration or service principal.
 
 	.PARAMETER ClientSecret
-		This is the Client secret that was generated when you secured the Service Principal
+		This is the client secret used for the client credentials flow.
 
 	.INPUTS
-		Input is from command line or called from a script.
+		None. You cannot pipe input to this function.
 
 	.OUTPUTS
-		This will output an access token that can be used in future API calls.
+		A token response object containing the Graph access token and expiry metadata.
 
 	.NOTES
 		Author:				Lars Panzerbjørn
 		Creation Date:		2021.08.11
-		
-		This token is also stored in the Script scope, and so is automagically available to other functions.
+		The returned token is also stored in module scope for use by other functions in this module.
 #>
 	[CmdletBinding()]
 	param
@@ -69,7 +68,7 @@ Function Get-AGGraphAccessToken{
 			Method = 'Post'
 			URI = $TokenEndpoint
 		}
-		
+
 		$Script:TenantID = $TenantID
 		$Script:ClientID = $ClientId
 		$Script:ClientSecret = $ClientSecret

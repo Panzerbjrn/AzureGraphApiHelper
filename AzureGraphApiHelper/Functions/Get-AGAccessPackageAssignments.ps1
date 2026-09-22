@@ -7,17 +7,21 @@ Function Get-AGAccessPackageAssignments{
 		Retrieves a list of Access Package Assignments as defined in entitlement management.
 
 	.EXAMPLE
+		Get-AGGraphAccessTokenFromAz
 		Get-AGAccessPackageAssignments
 
+		This command uses the current Az login context to populate the module token state and then returns access package assignments from entitlement management.
+
 	.INPUTS
-		Input is from command line or called from a script.
+		None. You cannot pipe input to this function.
 
 	.OUTPUTS
-		This will output a list of Access Package Assignments as defined in entitlement management
+		A collection of access package assignment objects returned by the Microsoft Graph entitlement management beta endpoint.
 
 	.NOTES
 		Author:				Lars Panzerbjørn
 		Creation Date:		2021.10.19
+		This function uses the module-scoped Graph authentication headers populated by Get-AGGraphAccessToken or Get-AGGraphAccessTokenFromAz.
 
 #>
 	[CmdletBinding()]

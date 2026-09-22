@@ -1,13 +1,22 @@
 Function Renew-AGGraphAccessToken{
 <#
 	.SYNOPSIS
-		This will renew the existing Token if it will expire in 5 minutes or less
+		Renews the existing Graph access token if it will expire in 5 minutes or less.
 
 	.DESCRIPTION
-		This will renew the existing Token if it will expire in 5 minutes or less
+		Renews the existing Graph access token if it will expire in 5 minutes or less.
+		This helper reuses the tenant ID, client ID, and client secret previously stored in module scope by Get-AGGraphAccessToken.
 
 	.EXAMPLE
 		Renew-AGGraphAccessToken
+
+		This command refreshes the module-scoped token when it is close to expiry.
+
+	.INPUTS
+		None. You cannot pipe input to this function.
+
+	.OUTPUTS
+		A token response object when the token is renewed. Otherwise, no output is produced.
 
 	.NOTES
 		Author:				Lars Panzerbjørn

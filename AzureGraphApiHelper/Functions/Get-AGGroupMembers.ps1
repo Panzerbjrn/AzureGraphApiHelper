@@ -5,27 +5,36 @@ Function Get-AGGroupMembers{
 
 	.DESCRIPTION
 		Retrieves a list of members of the specified group via MS Graph API.
+		You can identify the group by either -DisplayName or -GroupID.
 
 	.EXAMPLE
 		$AccessToken = Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
 		Get-AGGroupMembers -AccessToken $AccessToken -DisplayName SecurityGroup_01
-		
-		This command first get an access token, which is used to grant access to Graph, and then a list of group members is retrieved.
+
+		This command first gets an access token, which is used to grant access to Graph, and then retrieves the members of the matching group.
 		A list of the members of the group is then produced.
 
+	.EXAMPLE
+		Get-AGGroupMembers -AccessToken $AccessToken -GroupID "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+
+		This command retrieves members directly by group object ID.
+
 	.PARAMETER AccessToken
-		This is the AccessToken that grants you access to MS Graph.
+		This is the access token that grants you access to Microsoft Graph. If omitted, the function uses the module-scoped token created by Get-AGGraphAccessToken or Get-AGGraphAccessTokenFromAz.
 
 	.PARAMETER DisplayName
 		This is the start of the name of the group you are looking for. However, if more than one group is found, an error is returned.
-				
+
 		Example: for the group "Admin_Desktops" you could use -DisplayName Admin_D
 
+	.PARAMETER GroupID
+		This is the object ID of the group whose members you want to retrieve.
+
 	.INPUTS
-		Input is from command line or called from a script.
+		None. You cannot pipe input to this function.
 
 	.OUTPUTS
-		This will output a list of group members.
+		A collection of directory objects representing the group's direct members.
 
 	.NOTES
 		Author:				Lars Panzerbjørn

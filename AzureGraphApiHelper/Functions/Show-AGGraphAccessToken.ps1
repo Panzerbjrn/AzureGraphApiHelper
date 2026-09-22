@@ -1,15 +1,21 @@
 Function Show-AGGraphAccessToken{
 <#
 	.SYNOPSIS
-		This will show the existing Token if one exists
+		Shows the existing Graph access token stored in module scope.
 
 	.DESCRIPTION
-		This will show the existing Token if one exists
+		Shows the existing Graph access token stored in module scope if one exists.
 
 	.EXAMPLE
 		Show-AGGraphAccessToken
-		
-		This will show the existing Token if one exists
+
+		This command returns the token object currently stored in module scope.
+
+	.INPUTS
+		None. You cannot pipe input to this function.
+
+	.OUTPUTS
+		The token response object currently stored in module scope, if one exists.
 
 	.NOTES
 		Author:				Lars Panzerbjørn
