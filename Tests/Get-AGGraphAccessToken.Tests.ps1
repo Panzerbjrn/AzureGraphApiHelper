@@ -1,7 +1,6 @@
-. $PSScriptRoot\TestCommon.ps1
-
 Describe 'Get-AGGraphAccessToken' {
 	BeforeAll {
+		. $PSScriptRoot\TestCommon.ps1
 		Import-AgahModule
 	}
 
@@ -10,7 +9,7 @@ Describe 'Get-AGGraphAccessToken' {
 	}
 
 	It 'is exported' {
-		(Get-AgahCommand -Name 'Get-AGGraphAccessToken').Name | Should Be 'Get-AGGraphAccessToken'
+		(Get-AgahCommand -Name 'Get-AGGraphAccessToken').Name  | Should -Be 'Get-AGGraphAccessToken'
 	}
 
 	It 'returns a token response with expiry metadata' {
@@ -23,7 +22,7 @@ Describe 'Get-AGGraphAccessToken' {
 
 		$result = Get-AGGraphAccessToken -TenantID 'tenant-id' -ClientID 'client-id' -ClientSecret 'client-secret'
 
-		$result.access_token | Should Be 'token-value'
-		($result.PSObject.Properties.Name -contains 'ExpiresOn') | Should Be $true
+		$result.access_token  | Should -Be 'token-value'
+		($result.PSObject.Properties.Name -contains 'ExpiresOn')  | Should -Be $true
 	}
 }

@@ -33,7 +33,7 @@ Copyright = '(c) Lars Panzerbjørn. All rights reserved.'
 Description = 'This module will help to make MS Graph REST API calls. This includes some InTune and AD functionality.'
 
 # Minimum version of the PowerShell engine required by this module
-PowerShellVersion = '5.0'
+PowerShellVersion = '7.0'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''

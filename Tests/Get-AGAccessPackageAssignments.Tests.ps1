@@ -1,7 +1,6 @@
-. $PSScriptRoot\TestCommon.ps1
-
 Describe 'Get-AGAccessPackageAssignments' {
 	BeforeAll {
+		. $PSScriptRoot\TestCommon.ps1
 		Import-AgahModule
 	}
 
@@ -14,7 +13,7 @@ Describe 'Get-AGAccessPackageAssignments' {
 	}
 
 	It 'is exported' {
-		(Get-AgahCommand -Name 'Get-AGAccessPackageAssignments').Name | Should Be 'Get-AGAccessPackageAssignments'
+		(Get-AgahCommand -Name 'Get-AGAccessPackageAssignments').Name | Should -Be 'Get-AGAccessPackageAssignments'
 	}
 
 	It 'returns assignment items from the Graph response' {
@@ -26,7 +25,7 @@ Describe 'Get-AGAccessPackageAssignments' {
 
 		$result = Get-AGAccessPackageAssignments
 
-		@($result).Count | Should Be 1
-		$result[0].id | Should Be 'assignment-1'
+		@($result).Count | Should -Be 1
+		$result[0].id | Should -Be 'assignment-1'
 	}
 }

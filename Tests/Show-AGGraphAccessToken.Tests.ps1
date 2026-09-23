@@ -1,7 +1,6 @@
-. $PSScriptRoot\TestCommon.ps1
-
 Describe 'Show-AGGraphAccessToken' {
 	BeforeAll {
+		. $PSScriptRoot\TestCommon.ps1
 		Import-AgahModule
 	}
 
@@ -10,7 +9,7 @@ Describe 'Show-AGGraphAccessToken' {
 	}
 
 	It 'is exported' {
-		(Get-AgahCommand -Name 'Show-AGGraphAccessToken').Name | Should Be 'Show-AGGraphAccessToken'
+		(Get-AgahCommand -Name 'Show-AGGraphAccessToken').Name  | Should -Be 'Show-AGGraphAccessToken'
 	}
 
 	It 'returns the token stored in module scope' {
@@ -19,6 +18,6 @@ Describe 'Show-AGGraphAccessToken' {
 
 		$result = Show-AGGraphAccessToken
 
-		$result.access_token | Should Be 'token-value'
+		$result.access_token  | Should -Be 'token-value'
 	}
 }

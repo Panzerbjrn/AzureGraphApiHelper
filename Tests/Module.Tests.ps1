@@ -1,12 +1,11 @@
-. $PSScriptRoot\TestCommon.ps1
-
 Describe 'AzureGraphApiHelper module' {
 	BeforeAll {
+		. $PSScriptRoot\TestCommon.ps1
 		Import-AgahModule
 	}
 
 	It 'imports from the manifest' {
-		(Get-Module AzureGraphApiHelper) | Should Not BeNullOrEmpty
+		(Get-Module AzureGraphApiHelper)  | Should -Not -BeNullOrEmpty
 	}
 
 	It 'exports all function files in the Functions folder' {
@@ -17,6 +16,6 @@ Describe 'AzureGraphApiHelper module' {
 			Select-Object -ExpandProperty Name |
 			Sort-Object
 
-		Compare-Object -ReferenceObject $expected -DifferenceObject $actual | Should BeNullOrEmpty
+		Compare-Object -ReferenceObject $expected -DifferenceObject $actual  | Should -BeNullOrEmpty
 	}
 }

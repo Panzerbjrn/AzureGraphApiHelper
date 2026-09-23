@@ -1,7 +1,6 @@
-. $PSScriptRoot\TestCommon.ps1
-
 Describe 'Get-AGGraphAccessTokenFromAz' {
 	BeforeAll {
+		. $PSScriptRoot\TestCommon.ps1
 		Import-AgahModule
 	}
 
@@ -10,7 +9,7 @@ Describe 'Get-AGGraphAccessTokenFromAz' {
 	}
 
 	It 'is exported' {
-		(Get-AgahCommand -Name 'Get-AGGraphAccessTokenFromAz').Name | Should Be 'Get-AGGraphAccessTokenFromAz'
+		(Get-AgahCommand -Name 'Get-AGGraphAccessTokenFromAz').Name  | Should -Be 'Get-AGGraphAccessTokenFromAz'
 	}
 
 	It 'builds a token object from the current Az context' {
@@ -29,7 +28,7 @@ Describe 'Get-AGGraphAccessTokenFromAz' {
 
 		$result = Get-AGGraphAccessTokenFromAz
 
-		$result.access_token | Should Be 'token-value'
-		$result.resource | Should Be 'https://graph.microsoft.com'
+		$result.access_token  | Should -Be 'token-value'
+		$result.resource  | Should -Be 'https://graph.microsoft.com'
 	}
 }

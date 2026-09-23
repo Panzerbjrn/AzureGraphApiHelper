@@ -2,7 +2,9 @@ $script:ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $script:ManifestPath = Join-Path $script:ProjectRoot 'AzureGraphApiHelper\AzureGraphApiHelper.psd1'
 
 function Import-AgahModule {
-	Import-Module $script:ManifestPath -Force -ErrorAction Stop
+	if (-not (Get-Module -Name AzureGraphApiHelper -ErrorAction SilentlyContinue)) {
+		Import-Module -Name $script:ManifestPath -Force -ErrorAction Stop
+	}
 }
 
 function Get-AgahCommand {
@@ -55,3 +57,4 @@ function Clear-AgahModuleState {
 		}
 	} $Names
 }
+

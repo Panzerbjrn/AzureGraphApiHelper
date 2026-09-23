@@ -1,7 +1,6 @@
-. $PSScriptRoot\TestCommon.ps1
-
 Describe 'Get-AGAllMobileApps' {
 	BeforeAll {
+		. $PSScriptRoot\TestCommon.ps1
 		Import-AgahModule
 	}
 
@@ -14,7 +13,7 @@ Describe 'Get-AGAllMobileApps' {
 	}
 
 	It 'is exported' {
-		(Get-AgahCommand -Name 'Get-AGAllMobileApps').Name | Should Be 'Get-AGAllMobileApps'
+		(Get-AgahCommand -Name 'Get-AGAllMobileApps').Name | Should -Be 'Get-AGAllMobileApps'
 	}
 
 	It 'returns mobile app items from the Graph response' {
@@ -26,7 +25,7 @@ Describe 'Get-AGAllMobileApps' {
 
 		$result = Get-AGAllMobileApps
 
-		@($result).Count | Should Be 1
-		$result[0].id | Should Be 'app-1'
+		@($result).Count | Should -Be 1
+		$result[0].id | Should -Be 'app-1'
 	}
 }

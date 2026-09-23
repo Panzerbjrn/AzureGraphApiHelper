@@ -1,7 +1,6 @@
-. $PSScriptRoot\TestCommon.ps1
-
 Describe 'Get-AGAccessPackages' {
 	BeforeAll {
+		. $PSScriptRoot\TestCommon.ps1
 		Import-AgahModule
 	}
 
@@ -14,7 +13,7 @@ Describe 'Get-AGAccessPackages' {
 	}
 
 	It 'is exported' {
-		(Get-AgahCommand -Name 'Get-AGAccessPackages').Name | Should Be 'Get-AGAccessPackages'
+		(Get-AgahCommand -Name 'Get-AGAccessPackages').Name | Should -Be 'Get-AGAccessPackages'
 	}
 
 	It 'returns access package items from the Graph response' {
@@ -26,7 +25,7 @@ Describe 'Get-AGAccessPackages' {
 
 		$result = Get-AGAccessPackages
 
-		@($result).Count | Should Be 1
-		$result[0].id | Should Be 'package-1'
+		@($result).Count | Should -Be 1
+		$result[0].id | Should -Be 'package-1'
 	}
 }
