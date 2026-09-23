@@ -48,12 +48,12 @@ Function Get-AGGroups{
 
 	BEGIN{
 		IF (($AccessToken) -or ($TokenResponse)){
-			IF($AccessToken){
-				Write-Verbose "Using provided access token"
-				Write-verbose $AccessToken.access_token
-				$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}
-			}
-			IF(!($AccessToken)){
+			# IF($AccessToken){
+			# 	Write-Verbose "Using provided access token"
+			# 	# Write-verbose $AccessToken.access_token
+			# 	$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}
+			# }
+			IF(($TokenResponse)){
 				Write-Verbose "Using Token Response"
 				Write-verbose $TokenResponse.access_token
 				$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}
@@ -73,7 +73,7 @@ Function Get-AGGroups{
 			$URI = $URI + "/groups"
 		}
 	}
-	<# PROCESS{
+	PROCESS{
 		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers
 		$Resources = $Result.value
 		IF (!([string]::IsNullOrEmpty($Result.'@odata.nextLink'))){
@@ -87,11 +87,11 @@ Function Get-AGGroups{
 				$Page++
 				#Sleep -s 1
 			}
-			UNTIL ($Result.'@odata.nextLink' -eq $Null)
+			UNTIL ($Null -eq $Result.'@odata.nextLink')
 		}
 		Write-Verbose "There are $($Resources.count) resources"
 	}
 	END{
 		Return $Resources
-	} #>
+	}
 }

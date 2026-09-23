@@ -68,8 +68,16 @@ Function New-AGGroup {
 
     BEGIN {
 		IF (($AccessToken) -or ($TokenResponse)){
-			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)";"Content-Type" = "application/json"}}
-			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)";"Content-Type" = "application/json"}}
+			IF($AccessToken){
+                Write-Verbose "Using provided access token"
+                # Write-Verbose $AccessToken.access_token
+				$Headers = @{Authorization = "Bearer $($AccessToken.access_token)";"Content-Type" = "application/json"}
+            }
+			IF(!($AccessToken)){
+                Write-Verbose "Using Token Response"
+                # Write-Verbose $TokenResponse.access_token
+				$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)";"Content-Type" = "application/json"}
+            }
 		}
         ELSE {
             THROW "Please provide access token"

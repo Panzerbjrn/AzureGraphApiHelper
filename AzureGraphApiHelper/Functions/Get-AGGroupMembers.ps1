@@ -56,8 +56,16 @@ Function Get-AGGroupMembers{
 
 	BEGIN{
 		IF (($AccessToken) -or ($TokenResponse)){
-			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}}
-			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
+			IF($AccessToken){
+				Write-Verbose "Using provided access token"
+				Write-verbose $AccessToken.access_token
+				$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}
+			}
+			IF(!($AccessToken)){
+				Write-Verbose "Using Token Response"
+				Write-verbose $TokenResponse.access_token
+				$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}
+			}
 		}
 		ELSE {THROW "Please provide access token"}
 		$Version = "/v1.0"
