@@ -40,7 +40,7 @@ Function Get-AGGroupMembers{
 		Author:				Lars Panzerbjørn
 		Creation Date:		2021.08.11
 #>
-	[CmdletBinding()]
+	[CmdletBinding(PositionalBinding=$False)]
 	param
 	(
 		[Parameter(ParameterSetName='DisplayName')]

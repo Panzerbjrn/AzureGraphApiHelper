@@ -42,7 +42,7 @@ Function Get-AGGraphAccessToken{
 		Creation Date:		2021.08.11
 		The returned token is also stored in module scope for use by other functions in this module.
 #>
-	[CmdletBinding()]
+	[CmdletBinding(PositionalBinding=$False)]
 	param
 	(
 		[Parameter(Mandatory)][string]$TenantID,

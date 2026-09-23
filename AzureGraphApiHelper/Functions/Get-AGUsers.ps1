@@ -50,7 +50,7 @@ Function Get-AGUsers{
 		Author:				Lars Panzerbjørn
 		Creation Date:		2021.08.24
 #>
-	[CmdletBinding()]
+	[CmdletBinding(PositionalBinding=$False)]
 	param
 	(
 		[Parameter()][psobject]$AccessToken,

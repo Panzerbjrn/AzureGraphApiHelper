@@ -9,7 +9,7 @@ Function Get-AGGroupMembers{
 	.EXAMPLE
 		$AccessToken = Get-AGGraphAccessToken -TenantID $TenantID -ClientID $ClientId -ClientSecret $ClientSecret
 		Get-AGGroupMembers -AccessToken $AccessToken -DisplayName SecurityGroup_01
-		
+
 		This command first get an access token, which is used to grant access to Graph, and then a list of group members is retrieved.
 		A list of the members of the group is then produced.
 
@@ -18,7 +18,7 @@ Function Get-AGGroupMembers{
 
 	.PARAMETER DisplayName
 		This is the start of the name of the group you are looking for. However, if more than one group is found, an error is returned.
-				
+
 		Example: for the group "Admin_Desktops" you could use -DisplayName Admin_D
 
 	.INPUTS
@@ -31,7 +31,7 @@ Function Get-AGGroupMembers{
 		Author:				Lars Panzerbjørn
 		Creation Date:		2021.08.11
 #>
-	[CmdletBinding()]
+	[CmdletBinding(PositionalBinding=$False)]
 	param
 	(
 		[Parameter(ParameterSetName='DisplayName')]

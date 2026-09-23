@@ -18,7 +18,7 @@
 
 #Requires -Version 4.0
 
-[CmdletBinding()]
+[CmdletBinding(PositionalBinding=$False)]
 param()
 
 Write-Verbose $PSScriptRoot

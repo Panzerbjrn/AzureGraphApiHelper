@@ -32,7 +32,7 @@ Function Get-AGActivationUserDetail{
 		Author:				Lars Panzerbjørn
 		Creation Date:		2021.08.23
 #>
-	[CmdletBinding()]
+	[CmdletBinding(PositionalBinding=$False)]
 	param
 	(
 		[Parameter()][psobject]$AccessToken

@@ -24,7 +24,7 @@ Function Get-AGAccessPackageAssignments{
 		This function uses the module-scoped Graph authentication headers populated by Get-AGGraphAccessToken or Get-AGGraphAccessTokenFromAz.
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(PositionalBinding=$False)]
 	$Version = "/beta"
 	$URI = $BaseURI + $Version
 	$URI = $URI + "/identityGovernance/entitlementManagement/accessPackageAssignments"

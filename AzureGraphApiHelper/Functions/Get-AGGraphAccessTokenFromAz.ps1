@@ -35,7 +35,7 @@ Function Get-AGGraphAccessTokenFromAz {
 		Requires the Az.Accounts module to be installed and an active Az login context.
 		The returned token is also stored in module scope for use by other functions in this module.
 #>
-	[CmdletBinding()]
+	[CmdletBinding(PositionalBinding=$False)]
 	param(
 		[Parameter()][string]$ResourceUrl = "https://graph.microsoft.com"
 	)
