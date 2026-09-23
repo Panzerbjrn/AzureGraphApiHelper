@@ -55,7 +55,7 @@ Function New-AGGroup {
     .NOTES
         Author:              Lars Panzerbjørn
 #>
-    [CmdletBinding()]
+    [CmdletBinding(PositionalBinding=$False)]
     param
     (
         [Parameter()][psobject]$AccessToken,

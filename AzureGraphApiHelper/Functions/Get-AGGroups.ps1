@@ -38,24 +38,24 @@ Function Get-AGGroups{
 		Author:				Lars Panzerbjørn
 		Creation Date:		2021.08.24
 #>
-	[CmdletBinding()]
+	[CmdletBinding(PositionalBinding=$False)]
 	param
 	(
-		[Parameter()][psobject]$AccessToken,
 		[Parameter()][string]$DisplayNameStartsWith,
-		[Parameter()][switch]$UseBetaAPI
+		[Parameter()][switch]$UseBetaAPI,
+		[Parameter()][psobject]$AccessToken
 	)
 
 	BEGIN{
 		IF (($AccessToken) -or ($TokenResponse)){
-			# IF($AccessToken){
-			# 	Write-Verbose "Using provided access token"
-			# 	# Write-verbose $AccessToken.access_token
-			# 	$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}
-			# }
+			IF($AccessToken){
+				Write-Verbose "Using provided access token"
+				# Write-verbose $AccessToken.access_token
+				$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}
+			}
 			IF(($TokenResponse)){
 				Write-Verbose "Using Token Response"
-				Write-verbose $TokenResponse.access_token
+				# Write-verbose $TokenResponse.access_token
 				$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}
 			}
 		}
