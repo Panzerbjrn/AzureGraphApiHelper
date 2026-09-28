@@ -1,0 +1,114 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: windows-latest
+
+variables:
+  # Runs in Windows PowerShell so the pwsh install isn't in use while being upgraded.
+  installPwshScript: |
+    $ErrorActionPreference = 'Stop'
+    $metadata = Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/PowerShell/PowerShell/master/tools/metadata.json' -UseBasicParsing
+    $tag = $metadata.StableReleaseTag
+    $version = $tag.TrimStart('v')
+    $msi = Join-Path $env:AGENT_TEMPDIRECTORY "PowerShell-$version-win-x64.msi"
+    Invoke-WebRequest -Uri "https://github.com/PowerShell/PowerShell/releases/download/$tag/PowerShell-$version-win-x64.msi" -OutFile $msi -UseBasicParsing
+    $process = Start-Process -FilePath msiexec.exe -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru
+    IF ($process.ExitCode -notin 0, 3010) { throw "PowerShell install failed with exit code $($process.ExitCode)" }
+
+stages:
+  - stage: Test
+    jobs:
+      - job: Pester
+        steps:
+          - checkout: self
+
+          - task: PowerShell@2
+            displayName: Install latest PowerShell
+            inputs:
+              pwsh: false
+              targetType: inline
+              script: ${{ variables.installPwshScript }}
+
+          - task: PowerShell@2
+            displayName: Install latest PSResourceGet and Pester
+            inputs:
+              pwsh: true
+              targetType: inline
+              script: |
+                $PSVersionTable.PSVersion
+                Install-PSResource -Name Microsoft.PowerShell.PSResourceGet -Repository PSGallery -TrustRepository -Reinstall
+                Install-PSResource -Name Pester -Repository PSGallery -TrustRepository -Reinstall
+
+          - task: PowerShell@2
+            displayName: Run Pester tests
+            inputs:
+              pwsh: true
+              targetType: inline
+              script: |
+                Import-Module Pester
+                (Get-Module Pester).Version
+                $config = New-PesterConfiguration
+                $config.Run.Path = './Tests'
+                $config.Run.Exit = $true
+                $config.TestResult.Enabled = $true
+                $config.TestResult.OutputFormat = 'NUnitXml'
+                $config.TestResult.OutputPath = '$(Build.ArtifactStagingDirectory)/TestResults.xml'
+                $config.Output.Verbosity = 'Detailed'
+                Invoke-Pester -Configuration $config
+
+          - task: PublishTestResults@2
+            displayName: Publish test results
+            condition: always()
+            inputs:
+              testResultsFormat: NUnit
+              testResultsFiles: '$(Build.ArtifactStagingDirectory)/TestResults.xml'
+              failTaskOnFailedTests: true
+
+  - stage: Publish
+    dependsOn: Test
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.Reason'], 'PullRequest'))
+    jobs:
+      - job: PSGallery
+        steps:
+          - checkout: self
+
+          - task: PowerShell@2
+            displayName: Install latest PowerShell
+            inputs:
+              pwsh: false
+              targetType: inline
+              script: ${{ variables.installPwshScript }}
+
+          - task: PowerShell@2
+            displayName: Install latest PSResourceGet
+            inputs:
+              pwsh: true
+              targetType: inline
+              script: |
+                $PSVersionTable.PSVersion
+                Install-PSResource -Name Microsoft.PowerShell.PSResourceGet -Repository PSGallery -TrustRepository -Reinstall
+
+          - task: PowerShell@2
+            displayName: Publish to PowerShell Gallery
+            env:
+              PSGALLERY_API_KEY: $(PSGalleryApiKey)
+            inputs:
+              pwsh: true
+              targetType: inline
+              script: |
+                $modulePath = './AzureGraphApiHelper'
+                $manifest = Import-PowerShellDataFile -Path "$modulePath/AzureGraphApiHelper.psd1"
+                $published = Find-PSResource -Name AzureGraphApiHelper -Version $manifest.ModuleVersion -Repository PSGallery -ErrorAction SilentlyContinue
+                IF ($published) {
+                  Write-Host "Version $($manifest.ModuleVersion) is already published. Skipping."
+                  return
+                }
+                Publish-PSResource -Path $modulePath -ApiKey $env:PSGALLERY_API_KEY -Repository PSGallery -Verbose

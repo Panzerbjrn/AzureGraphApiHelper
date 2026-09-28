@@ -1,0 +1,94 @@
+name: Test and Publish
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Runs in Windows PowerShell so the pwsh install isn't in use while being upgraded.
+      - name: Install latest PowerShell
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $metadata = Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/PowerShell/PowerShell/master/tools/metadata.json' -UseBasicParsing
+          $tag = $metadata.StableReleaseTag
+          $version = $tag.TrimStart('v')
+          $msi = Join-Path $env:RUNNER_TEMP "PowerShell-$version-win-x64.msi"
+          Invoke-WebRequest -Uri "https://github.com/PowerShell/PowerShell/releases/download/$tag/PowerShell-$version-win-x64.msi" -OutFile $msi -UseBasicParsing
+          $process = Start-Process -FilePath msiexec.exe -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru
+          IF ($process.ExitCode -notin 0, 3010) { throw "PowerShell install failed with exit code $($process.ExitCode)" }
+
+      - name: Install latest PSResourceGet and Pester
+        shell: pwsh
+        run: |
+          $PSVersionTable.PSVersion
+          Install-PSResource -Name Microsoft.PowerShell.PSResourceGet -Repository PSGallery -TrustRepository -Reinstall
+          Install-PSResource -Name Pester -Repository PSGallery -TrustRepository -Reinstall
+
+      - name: Run Pester tests
+        shell: pwsh
+        run: |
+          Import-Module Pester
+          (Get-Module Pester).Version
+          $config = New-PesterConfiguration
+          $config.Run.Path = './Tests'
+          $config.Run.Exit = $true
+          $config.TestResult.Enabled = $true
+          $config.TestResult.OutputFormat = 'NUnitXml'
+          $config.TestResult.OutputPath = './TestResults.xml'
+          $config.Output.Verbosity = 'Detailed'
+          Invoke-Pester -Configuration $config
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pester-results
+          path: TestResults.xml
+
+  publish:
+    needs: test
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install latest PowerShell
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $metadata = Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/PowerShell/PowerShell/master/tools/metadata.json' -UseBasicParsing
+          $tag = $metadata.StableReleaseTag
+          $version = $tag.TrimStart('v')
+          $msi = Join-Path $env:RUNNER_TEMP "PowerShell-$version-win-x64.msi"
+          Invoke-WebRequest -Uri "https://github.com/PowerShell/PowerShell/releases/download/$tag/PowerShell-$version-win-x64.msi" -OutFile $msi -UseBasicParsing
+          $process = Start-Process -FilePath msiexec.exe -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru
+          IF ($process.ExitCode -notin 0, 3010) { throw "PowerShell install failed with exit code $($process.ExitCode)" }
+
+      - name: Install latest PSResourceGet
+        shell: pwsh
+        run: |
+          $PSVersionTable.PSVersion
+          Install-PSResource -Name Microsoft.PowerShell.PSResourceGet -Repository PSGallery -TrustRepository -Reinstall
+
+      - name: Publish to PowerShell Gallery
+        shell: pwsh
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+        run: |
+          $modulePath = './AzureGraphApiHelper'
+          $manifest = Import-PowerShellDataFile -Path "$modulePath/AzureGraphApiHelper.psd1"
+          $published = Find-PSResource -Name AzureGraphApiHelper -Version $manifest.ModuleVersion -Repository PSGallery -ErrorAction SilentlyContinue
+          IF ($published) {
+            Write-Host "Version $($manifest.ModuleVersion) is already published. Skipping."
+            return
+          }
+          Publish-PSResource -Path $modulePath -ApiKey $env:PSGALLERY_API_KEY -Repository PSGallery -Verbose
