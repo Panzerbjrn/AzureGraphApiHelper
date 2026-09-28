@@ -55,7 +55,7 @@ Function Get-AGGroupMembers{
 	)
 
 	BEGIN{
-		IF (($AccessToken) -or ($TokenResponse)){
+		IF(($AccessToken) -or ($TokenResponse)){
 			IF($AccessToken){
 				Write-Verbose "Using provided access token"
 				Write-verbose $AccessToken.access_token
@@ -71,7 +71,7 @@ Function Get-AGGroupMembers{
 		$Version = "/v1.0"
 	}
 	PROCESS{
-		IF ("DisplayName" -eq $PSCmdlet.ParameterSetName){
+		IF("DisplayName" -eq $PSCmdlet.ParameterSetName){
 			$ID = (Get-AGGroups -AccessToken $AccessToken -DisplayNameStartsWith $DisplayName).id
 			IF($ID.count -lt 1){THROW "There were no groups found"}
 			IF($ID.count -gt 1){THROW "More than one group was found"}
@@ -81,7 +81,7 @@ Function Get-AGGroupMembers{
 		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers
 
 		$Resources = $Result.value
-		IF (!([string]::IsNullOrEmpty($Result.'@odata.nextLink'))){
+		IF(!([string]::IsNullOrEmpty($Result.'@odata.nextLink'))){
 			$Page = 1
 			DO{
 				Write-Verbose "Page $($Page)"

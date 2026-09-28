@@ -36,7 +36,7 @@ Function Get-AGDeletedUsers{
 		[Parameter()][psobject]$AccessToken
 	)
 	BEGIN{
-		IF (($AccessToken) -or ($TokenResponse)){
+		IF(($AccessToken) -or ($TokenResponse)){
 			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}}
 			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
 		}
@@ -50,7 +50,7 @@ Function Get-AGDeletedUsers{
 		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers
 
 		$Resources = $Result.value
-		IF (!([string]::IsNullOrEmpty($Result.'@odata.nextLink'))){
+		IF(!([string]::IsNullOrEmpty($Result.'@odata.nextLink'))){
 			$Page = 1
 			DO{
 				Write-Verbose "Page $($Page)"

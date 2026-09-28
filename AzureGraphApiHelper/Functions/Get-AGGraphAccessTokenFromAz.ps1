@@ -42,27 +42,27 @@ Function Get-AGGraphAccessTokenFromAz {
 
 	BEGIN{
 		# Check if Az module is available
-		if (-not (Get-Module -ListAvailable -Name Az.Accounts)) {
+		IF(-not (Get-Module -ListAvailable -Name Az.Accounts)) {
 			throw "Az.Accounts module is not installed. Please install it using: Install-Module -Name Az.Accounts"
 		}
 
 		# Check if we're logged in
-		try {
+		TRY{
 			$null = Get-AzContext -ErrorAction Stop
 		}
-		catch {
+		CATCH{
 			throw "Not logged into Azure. Please run Connect-AzAccount first."
 		}
 	}
 
 	PROCESS{
-		try {
+		TRY{
 			# Get the token from Az module
 			$AzToken = Get-AzAccessToken -ResourceUrl $ResourceUrl -ErrorAction Stop
 
 			# The token might be in different formats depending on Az module version
 			# Extract the actual token string
-			if ($AzToken.Token -is [SecureString]) {
+			IF($AzToken.Token -is [SecureString]) {
 				# Convert SecureString to plain text
 				$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($AzToken.Token)
 				$TokenString = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
@@ -74,9 +74,9 @@ Function Get-AGGraphAccessTokenFromAz {
 			}
 
 			# Calculate expiration time
-			if ($AzToken.ExpiresOn) {
+			IF($AzToken.ExpiresOn) {
 				$ExpiresOn = $AzToken.ExpiresOn
-				if ($ExpiresOn -is [DateTime]) {
+				IF($ExpiresOn -is [DateTime]) {
 					$ExpiresOnDateTime = $ExpiresOn
 				}
 				else {
@@ -111,7 +111,7 @@ Function Get-AGGraphAccessTokenFromAz {
 			Write-Verbose "Successfully acquired Graph access token. Expires at: $($ExpiresOnDateTime.ToString('yyyy-MM-dd HH:mm:ss'))"
 			Write-Verbose "Token starts with: $($TokenString.Substring(0, [Math]::Min(20, $TokenString.Length)))..."
 		}
-		catch {
+		CATCH{
 			throw "Failed to acquire access token: $_"
 		}
 	}

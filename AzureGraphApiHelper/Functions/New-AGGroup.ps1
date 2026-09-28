@@ -66,8 +66,8 @@ Function New-AGGroup {
         [Parameter()][switch]$UseBetaAPI
     )
 
-    BEGIN {
-		IF (($AccessToken) -or ($TokenResponse)){
+    BEGIN{
+		IF(($AccessToken) -or ($TokenResponse)){
 			IF($AccessToken){
                 Write-Verbose "Using provided access token"
                 # Write-Verbose $AccessToken.access_token
@@ -83,7 +83,7 @@ Function New-AGGroup {
             THROW "Please provide access token"
         }
 
-        IF ($UseBetaAPI) { $Version = "/beta" }
+        IF($UseBetaAPI) { $Version = "/beta" }
         Else { $Version = "/v1.0" }
 
         $URI = $BaseURI + $Version + "/groups"
@@ -94,11 +94,11 @@ Function New-AGGroup {
             mailNickname = $MailNickname
         }
 
-        IF ($Description) {
+        IF($Description) {
             $BodyHash.description = $Description
         }
 
-        IF ($GroupType -eq "Microsoft365") {
+        IF($GroupType -eq "Microsoft365") {
             $BodyHash.groupTypes = @("Unified")
             $BodyHash.mailEnabled = $True
             $BodyHash.securityEnabled = $True
@@ -113,18 +113,18 @@ Function New-AGGroup {
         $Body = $BodyHash | ConvertTo-Json -Depth 3
     }
 
-    PROCESS {
-        Try {
+    PROCESS{
+        TRY{
             Write-Verbose "Creating group '$DisplayName' at $URI"
             $Result = Invoke-RestMethod -Method POST -Uri $URI -Headers $Headers -Body $Body
         }
-        Catch {
+        CATCH{
             Write-Error "Failed to create group: $($_.Exception.Message)"
             Throw
         }
     }
 
-    END {
+    END{
         Return $Result
     }
 }

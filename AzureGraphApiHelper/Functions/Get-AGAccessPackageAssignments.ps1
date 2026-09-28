@@ -37,7 +37,7 @@ Function Get-AGAccessPackageAssignments{
 
 	$Result = Invoke-RestMethod -Uri $URI -Headers $Headers
 	$Resources = $Result.value
-	IF (!([string]::IsNullOrEmpty($Result.'@odata.nextLink'))){
+	IF(!([string]::IsNullOrEmpty($Result.'@odata.nextLink'))){
 		$Page = 1
 		DO{
 			Write-Verbose "Page $($Page)"

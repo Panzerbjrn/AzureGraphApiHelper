@@ -47,7 +47,7 @@ Function Get-AGGroups{
 	)
 
 	BEGIN{
-		IF (($AccessToken) -or ($TokenResponse)){
+		IF(($AccessToken) -or ($TokenResponse)){
 			IF($AccessToken){
 				Write-Verbose "Using provided access token"
 				# Write-verbose $AccessToken.access_token
@@ -76,7 +76,7 @@ Function Get-AGGroups{
 	PROCESS{
 		$Result = Invoke-RestMethod -Uri $URI -Headers $Headers
 		$Resources = $Result.value
-		IF (!([string]::IsNullOrEmpty($Result.'@odata.nextLink'))){
+		IF(!([string]::IsNullOrEmpty($Result.'@odata.nextLink'))){
 			$Page = 1
 			DO{
 				Write-Verbose "Page $($Page)"
