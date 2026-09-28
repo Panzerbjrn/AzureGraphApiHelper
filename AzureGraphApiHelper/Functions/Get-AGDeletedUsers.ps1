@@ -39,8 +39,7 @@ Function Get-AGDeletedUsers{
 		IF(($AccessToken) -or ($TokenResponse)){
 			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}}
 			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
-		}
-		ELSE {THROW "Please provide access token"}
+		}ELSE{THROW "Please provide access token"}
 
 		$Version = "/beta"
 		$ExpandedURI = "/directory/deleteditems/microsoft.graph.user?`$format=application/json"

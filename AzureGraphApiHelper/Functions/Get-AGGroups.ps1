@@ -58,18 +58,15 @@ Function Get-AGGroups{
 				# Write-verbose $TokenResponse.access_token
 				$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}
 			}
-		}
-		ELSE {THROW "Please provide access token"}
+		}ELSE{THROW "Please provide access token"}
 
-		IF($UseBetaAPI){$Version = "/beta"}
-		Else{$Version = "/v1.0"}
+		IF($UseBetaAPI){$Version = "/beta"}ELSE{$Version = "/v1.0"}
 
 		$URI = $BaseURI + $Version
 
 		IF($DisplayNameStartsWith){
 			$URI = $URI + "/groups?`$filter=startswith(displayName, '$DisplayNameStartsWith')"
-		}
-		ELSE{
+		}ELSE{
 			$URI = $URI + "/groups"
 		}
 	}

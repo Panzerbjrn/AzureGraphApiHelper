@@ -76,8 +76,7 @@ Function Get-AGSPEntraMemberOf{
 		IF(($AccessToken) -or ($TokenResponse)){
 			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}}
 			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
-		}
-		ELSE {THROW "Please provide access token"}
+		}ELSE{THROW "Please provide access token"}
 
 		IF($UseBetaAPI){$Version = "/beta"} Else {$Version = "/v1.0"}
 
@@ -94,27 +93,22 @@ Function Get-AGSPEntraMemberOf{
 			IF($LookupResult.value){
 				$OID = $LookupResult.value.id
 				Write-Verbose "Found service principal with ObjectID: $OID"
-			}
-			ELSEIF($LookupResult.id){
+			}ELSEIF($LookupResult.id){
 				$OID = $LookupResult.id
 				Write-Verbose "Found service principal with ObjectID: $OID"
-			}
-			ELSE{
+			}ELSE{
 				THROW "No service principal found with AppID: $AppID"
 			}
-		}
-		ELSEIF($PSCmdlet.ParameterSetName -eq "ObjectID" -or $PSCmdlet.ParameterSetName -eq "ObjectIDBeta"){
+		}ELSEIF($PSCmdlet.ParameterSetName -eq "ObjectID" -or $PSCmdlet.ParameterSetName -eq "ObjectIDBeta"){
 			$OID = $ObjectID
-		}
-		ELSE {
+		}ELSE {
 			THROW "Either -ObjectID or -AppID must be provided"
 		}
 
 		# Build the appropriate endpoint URI
 		IF($UseBetaAPI){
 			$ExpandedURI = "/servicePrincipals/$OID/transitiveMemberOf"
-		}
-		ELSE{
+		}ELSE{
 			$ExpandedURI = "/servicePrincipals/$OID/memberOf"
 		}
 

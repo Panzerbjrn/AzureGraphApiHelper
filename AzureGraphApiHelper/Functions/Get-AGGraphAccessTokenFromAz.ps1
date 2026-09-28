@@ -49,8 +49,7 @@ Function Get-AGGraphAccessTokenFromAz {
 		# Check if we're logged in
 		TRY{
 			$null = Get-AzContext -ErrorAction Stop
-		}
-		CATCH{
+		}CATCH{
 			throw "Not logged into Azure. Please run Connect-AzAccount first."
 		}
 	}
@@ -67,8 +66,7 @@ Function Get-AGGraphAccessTokenFromAz {
 				$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($AzToken.Token)
 				$TokenString = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
 				[System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($BSTR)
-			}
-			else {
+			}ELSE {
 				# It's already a string
 				$TokenString = $AzToken.Token.ToString()
 			}
@@ -78,13 +76,11 @@ Function Get-AGGraphAccessTokenFromAz {
 				$ExpiresOn = $AzToken.ExpiresOn
 				IF($ExpiresOn -is [DateTime]) {
 					$ExpiresOnDateTime = $ExpiresOn
-				}
-				else {
+				}ELSE {
 					# Try to parse it
 					$ExpiresOnDateTime = [DateTime]::Parse($ExpiresOn.ToString())
 				}
-			}
-			else {
+			}ELSE {
 				# Default to 1 hour if we can't determine
 				$ExpiresOnDateTime = (Get-Date).AddHours(1)
 			}
@@ -110,8 +106,7 @@ Function Get-AGGraphAccessTokenFromAz {
 
 			Write-Verbose "Successfully acquired Graph access token. Expires at: $($ExpiresOnDateTime.ToString('yyyy-MM-dd HH:mm:ss'))"
 			Write-Verbose "Token starts with: $($TokenString.Substring(0, [Math]::Min(20, $TokenString.Length)))..."
-		}
-		CATCH{
+		}CATCH{
 			throw "Failed to acquire access token: $_"
 		}
 	}

@@ -41,8 +41,7 @@ Function Get-AGActivationUserDetail{
 		IF(($AccessToken) -or ($TokenResponse)){
 			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}}
 			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
-		}
-		ELSE {THROW "Please provide access token"}
+		}ELSE{THROW "Please provide access token"}
 
 		$Version = "/v1.0"
 		$ExpandedURI = "/reports/getOffice365ActivationsUserDetail"

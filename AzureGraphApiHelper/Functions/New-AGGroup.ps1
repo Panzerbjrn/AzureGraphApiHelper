@@ -78,13 +78,11 @@ Function New-AGGroup {
                 # Write-Verbose $TokenResponse.access_token
 				$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)";"Content-Type" = "application/json"}
             }
-		}
-        ELSE {
+        }ELSE {
             THROW "Please provide access token"
         }
 
-        IF($UseBetaAPI) { $Version = "/beta" }
-        Else { $Version = "/v1.0" }
+        IF($UseBetaAPI) { $Version = "/beta" }ELSE { $Version = "/v1.0" }
 
         $URI = $BaseURI + $Version + "/groups"
 
@@ -102,8 +100,7 @@ Function New-AGGroup {
             $BodyHash.groupTypes = @("Unified")
             $BodyHash.mailEnabled = $True
             $BodyHash.securityEnabled = $True
-        }
-        ELSE {
+        }ELSE {
             # Security group
             $BodyHash.groupTypes = @()
             $BodyHash.mailEnabled = $False
@@ -117,8 +114,7 @@ Function New-AGGroup {
         TRY{
             Write-Verbose "Creating group '$DisplayName' at $URI"
             $Result = Invoke-RestMethod -Method POST -Uri $URI -Headers $Headers -Body $Body
-        }
-        CATCH{
+        }CATCH{
             Write-Error "Failed to create group: $($_.Exception.Message)"
             Throw
         }

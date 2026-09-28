@@ -25,7 +25,7 @@ function Set-AgahModuleState {
 	$module = Get-Module AzureGraphApiHelper -ErrorAction Stop
 	& $module {
 		param($State)
-		foreach ($key in $State.Keys) {
+		ForEach ($key in $State.Keys) {
 			Set-Variable -Scope Script -Name $key -Value $State[$key]
 		}
 	} $State
@@ -52,7 +52,7 @@ function Clear-AgahModuleState {
 	$module = Get-Module AzureGraphApiHelper -ErrorAction Stop
 	& $module {
 		param($Names)
-		foreach ($name in $Names) {
+		ForEach ($name in $Names) {
 			Remove-Variable -Scope Script -Name $name -ErrorAction SilentlyContinue
 		}
 	} $Names

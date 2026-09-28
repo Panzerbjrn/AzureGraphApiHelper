@@ -80,8 +80,7 @@ Function Add-AGSPEntraGroupMember{
 		IF(($AccessToken) -or ($TokenResponse)){
 			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}}
 			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
-		}
-		ELSE {THROW "Please provide access token"}
+		}ELSE{THROW "Please provide access token"}
 
 		$Version = "/v1.0"
 		$BaseURI = "https://graph.microsoft.com"
@@ -95,15 +94,12 @@ Function Add-AGSPEntraGroupMember{
 
 			IF($LookupResult.value){
 				$SPObjectID = $LookupResult.value.id
-			}
-			ELSEIF($LookupResult.id){
+			}ELSEIF($LookupResult.id){
 				$SPObjectID = $LookupResult.id
-			}
-			ELSE{
+			}ELSE{
 				THROW "No service principal found with AppID: $AppID"
 			}
-		}
-		ELSE{
+		}ELSE{
 			$SPObjectID = $ObjectID
 		}
 
@@ -111,8 +107,7 @@ Function Add-AGSPEntraGroupMember{
 			$ResolvedGroupID = (Get-AGGroups -AccessToken $AccessToken -DisplayNameStartsWith $DisplayName).id
 			IF($ResolvedGroupID.count -lt 1){THROW "There were no groups found"}
 			IF($ResolvedGroupID.count -gt 1){THROW "More than one group was found"}
-		}
-		ELSE{
+		}ELSE{
 			$ResolvedGroupID = $GroupID
 		}
 

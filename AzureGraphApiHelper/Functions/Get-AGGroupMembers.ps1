@@ -66,8 +66,7 @@ Function Get-AGGroupMembers{
 				Write-verbose $TokenResponse.access_token
 				$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}
 			}
-		}
-		ELSE {THROW "Please provide access token"}
+		}ELSE{THROW "Please provide access token"}
 		$Version = "/v1.0"
 	}
 	PROCESS{

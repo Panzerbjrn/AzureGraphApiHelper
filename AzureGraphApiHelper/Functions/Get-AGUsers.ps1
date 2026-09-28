@@ -68,21 +68,17 @@ Function Get-AGUsers{
 		IF(($AccessToken) -or ($TokenResponse)){
 			IF($AccessToken){$Headers = @{Authorization = "Bearer $($AccessToken.access_token)"}}
 			IF(!($AccessToken)){$Headers = @{Authorization = "Bearer $($TokenResponse.access_token)"}}
-		}
-		ELSE {THROW "Please provide access token"}
+		}ELSE{THROW "Please provide access token"}
 
-		IF($UseBetaAPI){$Version = "/beta"}
-		Else{$Version = "/v1.0"}
+		IF($UseBetaAPI){$Version = "/beta"}ELSE{$Version = "/v1.0"}
 
 		$URI = $BaseURI + $Version
 
 		IF($UserPrincipalName){
 			$URI = $URI + "/users/$($UserPrincipalName)"
-		}
-		ELSEIF($UserType){
+		}ELSEIF($UserType){
 			$URI = $URI + "/users?`$filter=userType eq '$UserType'"
-		}
-		ELSE{
+		}ELSE{
 			$URI = $URI + "/users"
 		}
 
@@ -106,8 +102,7 @@ Function Get-AGUsers{
 				UNTIL ($Result.'@odata.nextLink' -eq $Null)
 			}
 			Write-Verbose "There are $($Resources.count) resources"
-		}
-		Else{
+		}ELSE{
 			$Resources = $Result
 		}
 	}
