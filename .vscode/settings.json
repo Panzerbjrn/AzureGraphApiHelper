@@ -2,24 +2,53 @@
 //     "powershell.scriptAnalysis.enable": false
 // }
 // "powershell.scriptAnalysis.settingsPath": "${workspaceFolder}/.vscode/PSScriptAnalyzerSettings.psd1"
+// "powershell.scriptAnalysis.settingsPath": "${workspaceFolder}/AzureGraphApiHelper/.vscode/PSScriptAnalyzerSettings.psd1",
 {
-    "powershell.scriptAnalysis.settingsPath": "./PSScriptAnalyzerSettings.psd1",
-    "powershell.codeFormatting.addWhitespaceAroundPipe": true,
-    "powershell.codeFormatting.alignPropertyValuePairs": true,
-    "powershell.codeFormatting.autoCorrectAliases": true,
-    "powershell.codeFormatting.ignoreOneLineBlock": true,
-    "powershell.codeFormatting.newLineAfterCloseBrace": true,
-    "powershell.codeFormatting.newLineAfterOpenBrace": true,
-    "powershell.codeFormatting.openBraceOnSameLine": true,
-    "powershell.codeFormatting.pipelineIndentationStyle": "IncreaseIndentationForFirstPipeline",
-    "powershell.codeFormatting.preset": "OTBS",
-    "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
-    "powershell.codeFormatting.useConstantStrings": true,
-    "powershell.codeFormatting.useCorrectCasing": true,
-    "powershell.codeFormatting.whitespaceAfterSeparator": true,
-    "powershell.codeFormatting.whitespaceAroundOperator": true,
-    "powershell.codeFormatting.whitespaceBeforeOpenBrace": true,
-    "powershell.codeFormatting.whitespaceBeforeOpenParen": true,
-    "powershell.codeFormatting.whitespaceBetweenParameters": true,
-    "powershell.codeFormatting.whitespaceInsideBrace": true,
+  //default formatters
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[powershell]": {
+    "editor.defaultFormatter": "ms-vscode.powershell",
+        "editor.stickyScroll.defaultModel": "foldingProviderModel",
+    "editor.semanticHighlighting.enabled": false, // do not activate, breaks colour coding for some constants
+    "editor.wordSeparators": "`~!@#$%^&*()-=+[{]}\\|;:'\",.<>/?"
+  },
+  "cSpell.language": "en-GB",
+  "editor.defaultFormatter": "ms-vscode.powershell",
+  "editor.insertSpaces": true,
+  "editor.stickyScroll.enabled": true,
+  "editor.matchBrackets": "always",
+  "window.restoreWindows": "none",
+  "workbench.startupEditor": "welcomePage",
+
+  //powershell settings
+  "powershell.scriptAnalysis.settingsPath": "${workspaceFolder}/AzureGraphApiHelper/.vscode/PSScriptAnalyzerSettings.psd1",
+  "powershell.codeFormatting.addWhitespaceAroundPipe": true,
+  "powershell.codeFormatting.alignPropertyValuePairs": true,
+  "powershell.codeFormatting.autoCorrectAliases": true,
+  "powershell.codeFormatting.ignoreOneLineBlock": true,
+  "powershell.codeFormatting.newLineAfterCloseBrace": true,
+  "powershell.codeFormatting.newLineAfterOpenBrace": true,
+  "powershell.codeFormatting.openBraceOnSameLine": true,
+  "powershell.codeFormatting.pipelineIndentationStyle": "IncreaseIndentationForFirstPipeline",
+  "powershell.codeFormatting.preset": "OTBS",
+  "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+  "powershell.codeFormatting.useConstantStrings": true,
+  "powershell.codeFormatting.useCorrectCasing": true,
+  "powershell.codeFormatting.whitespaceAfterSeparator": true,
+  "powershell.codeFormatting.whitespaceAroundOperator": true,
+  "powershell.codeFormatting.whitespaceBeforeOpenBrace": true,
+  "powershell.codeFormatting.whitespaceBeforeOpenParen": true,
+  "powershell.codeFormatting.whitespaceBetweenParameters": true,
+  "powershell.codeFormatting.whitespaceInsideBrace": true,
 }
